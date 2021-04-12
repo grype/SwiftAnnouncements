@@ -3,6 +3,7 @@
 //  
 //
 //  Created by Pavel Skaldin on 4/8/21.
+//  Copyright © 2021 Pavel Skaldin. All rights reserved.
 //
 
 import Foundation
