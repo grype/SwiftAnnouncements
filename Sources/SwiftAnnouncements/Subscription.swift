@@ -12,7 +12,7 @@ import Foundation
  
  I capture a type of announcement, an action block to perform in response to correlated announcement, and optionally a subscriber object. I am used by an `Announcer` to process announcements.
  */
-public class Subscription<T: Announcement> {
+public class Subscription<T: Announceable> {
 
     public typealias Action = (T, Announcer)->Void
 
@@ -35,10 +35,11 @@ public class Subscription<T: Announcement> {
     }
 
     public func deliver(_ anAnnouncement: T) {
+        anAnnouncement.prepareForAnnouncement()
         action(anAnnouncement, announcer)
     }
     
-    public func handles<T:Announcement>(_ anAnnouncement: T) -> Bool {
+    public func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
         return type(of: anAnnouncement).handles(anAnnouncement)
     }
 

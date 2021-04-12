@@ -9,30 +9,28 @@ import Foundation
 
 
 /**
- I provide a thread-safe mechanism for notifying subscribers using closures.
- 
- I use an Observer pattern to notify observers of `Announcement`s.
- Observers subscribe using `when(_:subscriber:do:)`.
- Announcements are made by calling `announce(_:)`
+ I provide a thread-safe mechanism for notifying subscribers of arbitrary announcements.
  
  ### Subscribing
  
  Observers subscribe to announcements using `when(_:subscriber:do:)`. For example:
  
  ```
- extension String : Announcement {}
+ extension String : Announceable {}
  let announcer = Announcer()
- 
- announcer.when(String.self, subscriber: self) { (aString, anAnnouncer) in
-    print(aString)
- }
  
  let subscription = announcer.when(String.self) { (aString, anAnnouncer) in
     print(aString)
  }
+ 
+ // or passing in an arbitrary subscriber object
+ announcer.when(String.self, subscriber: self) { (aString, anAnnouncer) in
+    print(aString)
+ }
+ 
  ```
  
- The subscriber is optional and `when` method returns a `Subscription` object. Either object is required when unsubscribing (see below).
+ The subscriber is optional and `when()` returns a `Subscription` object. Either object is required for unsubscribing (see below).
  
  ### Announcing
  
@@ -44,7 +42,7 @@ import Foundation
  
  ### Unsubscribing
  
- Of course, at some point the observers will need to unsubscribe. This can be done in two ways:
+ When done observing, remove the subscription. This can be done in two ways:
  
  Using the subscriber object:
  
@@ -56,7 +54,7 @@ import Foundation
  By removing the `Subscription` object:
  
  ```
- let subscription = announcer.when(String.self, subscriber: self) { ... }
+ let subscription = announcer.when(String.self) { ... }
  announcer.remove(subscription: subscription)
  ```
  
@@ -77,14 +75,14 @@ public class Announcer {
     // MARK:- Subscribing
     
     @discardableResult
-    open func when<T: Announcement>(_ aType: T.Type, subscriber: AnyObject? = nil, do aBlock: @escaping (T, Announcer)->Void) -> Subscription<T> {
+    open func when<T: Announceable>(_ aType: T.Type, subscriber: AnyObject? = nil, do aBlock: @escaping (T, Announcer)->Void) -> Subscription<T> {
         let subscription = Subscription(action: aBlock, type: aType, announcer: self)
         subscription.subscriber = subscriber
         registry.add(subscription)
         return subscription
     }
     
-    open func remove<T: Announcement>(subscription: Subscription<T>) {
+    open func remove<T: Announceable>(subscription: Subscription<T>) {
         registry.remove(subscription)
     }
     
@@ -98,7 +96,7 @@ public class Announcer {
     
     // MARK:- Announcing
     
-    open func announce<T: Announcement>(_ announcement: T) {
+    open func announce<T: Announceable>(_ announcement: T) {
         registry.deliver(announcement)
     }
     

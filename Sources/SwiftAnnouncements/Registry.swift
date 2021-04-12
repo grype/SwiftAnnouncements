@@ -22,11 +22,11 @@ class Registry {
     
     // MARK:- Adding/Removing
     
-    public func add<T:Announcement>(_ aSubscription: Subscription<T>) {
+    public func add<T:Announceable>(_ aSubscription: Subscription<T>) {
         subscriptions.append(AnySubscription(aSubscription))
     }
     
-    public func remove<T:Announcement>(_ aSubscription: Subscription<T>) {
+    public func remove<T:Announceable>(_ aSubscription: Subscription<T>) {
         subscriptions.removeAll { (each) -> Bool in
             each.base as? Subscription<T> === aSubscription
         }
@@ -44,7 +44,7 @@ class Registry {
     
     // MARK:- Announcing
     
-    func deliver<T: Announcement>(_ anAnnouncement: T) {
+    func deliver<T: Announceable>(_ anAnnouncement: T) {
         subscriptions.forEach { (aSubscription) in
             guard let aSubscription = aSubscription.base as? Subscription<T> else { return }
             aSubscription.action(anAnnouncement, aSubscription.announcer)
@@ -63,7 +63,7 @@ public struct AnySubscription {
     public var base: Any
     public var subscriber: AnyObject?
     
-    public init<H,S:Announcement>(_ aBase: H) where H : Subscription<S> {
+    public init<H,S:Announceable>(_ aBase: H) where H : Subscription<S> {
         base = aBase
         subscriber = aBase.subscriber
     }

@@ -9,7 +9,7 @@ import XCTest
 import Nimble
 @testable import SwiftAnnouncements
 
-extension String : Announcement {}
+extension String : Announceable {}
 
 class AnnouncerTest: XCTestCase {
     
