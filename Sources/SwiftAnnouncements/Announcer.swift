@@ -34,10 +34,24 @@ import Foundation
  
  ### Announcing
  
- Making an announcement would evaluate blocks of code with which observer had previously subscribed:
+ Making an announcement would evaluate blocks of code with which observers had previously subscribed, provided they match the type (or the type inherits from the type used in subscription):
  
  ```
- announcer.announce("Drink Water!")
+ announcer.when(String.self) { (aString, _) in
+    print(aString)
+ }
+ announcer.announce("Drink Water!") // will result in above print statement
+ 
+ class Foo : Announceable {}
+ class Bar : Foo {}
+ announcer.when(Foo.self) { (aFoo, _) in
+    print("Foo")
+ }
+ announcer.when(Bar.self) { (aBar, _) in
+    print("Bar")
+ }
+ announcer.announce(Foo()) // will print "Foo"
+ announcer.announce(Bar()) // will print "Foo" and "Bar"
  ```
  
  ### Unsubscribing
@@ -51,7 +65,7 @@ import Foundation
  announcer.unsubscribe(self)
  ```
  
- By removing the `Subscription` object:
+ By directly removing the `Subscription` object:
  
  ```
  let subscription = announcer.when(String.self) { ... }

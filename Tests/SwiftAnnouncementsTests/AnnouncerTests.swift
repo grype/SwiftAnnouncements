@@ -11,6 +11,9 @@ import Nimble
 
 extension String : Announceable {}
 
+class TestAnnouncement : Announceable {}
+class TestAnnouncementSubclass : TestAnnouncement {}
+
 class AnnouncerTest: XCTestCase {
     
     private var announcer: Announcer!
@@ -111,6 +114,38 @@ class AnnouncerTest: XCTestCase {
         announcer.unsubscribe(self)
         announcer.announce(announcement)
         expect(result.isEmpty) == true
+    }
+    
+    func testAnnouncingSubclass() {
+        var result: TestAnnouncement?
+        announcer.when(TestAnnouncement.self) { (anAnnouncement, _) in
+            result = anAnnouncement
+        }
+        announcer.announce(TestAnnouncementSubclass())
+        expect(result).to(beAKindOf(TestAnnouncementSubclass.self))
+    }
+    
+    func testAnnouncingSuperclass() {
+        var result: TestAnnouncement?
+        announcer.when(TestAnnouncementSubclass.self) { (anAnnouncement, _) in
+            result = anAnnouncement
+        }
+        announcer.announce(TestAnnouncement())
+        expect(result).to(beNil())
+    }
+    
+    func testAnnouncingSubclassWhileObservingHierarchy() {
+        var results = [String]()
+        announcer.when(TestAnnouncement.self) { (aFoo, _) in
+            results.append("Foo")
+        }
+        announcer.when(TestAnnouncementSubclass.self) { (aBar, _) in
+            results.append("Bar")
+        }
+        announcer.announce(TestAnnouncementSubclass())
+        expect(results.count) == 2
+        expect(results).to(contain("Foo"))
+        expect(results).to(contain("Bar"))
     }
     
     // MARK:- Unsubscribing
