@@ -25,6 +25,7 @@ extension Announceable {
     }
     
     public static func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
-        return type(of: anAnnouncement) == self
+        guard let _ = anAnnouncement as? Self else { return false }
+        return true
     }
 }

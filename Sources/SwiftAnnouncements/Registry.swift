@@ -46,8 +46,7 @@ class Registry {
     
     func deliver<T: Announceable>(_ anAnnouncement: T) {
         subscriptions.forEach { (aSubscription) in
-            guard let aSubscription = aSubscription.base as? Subscription<T> else { return }
-            aSubscription.action(anAnnouncement, aSubscription.announcer)
+            aSubscription.handler(anAnnouncement)
         }
     }
     
@@ -61,10 +60,15 @@ class Registry {
 public struct AnySubscription {
     
     public var base: Any
-    public var subscriber: AnyObject?
+    var subscriber: AnyObject?
+    fileprivate var handler: (Announceable) -> Void
     
     public init<H,S:Announceable>(_ aBase: H) where H : Subscription<S> {
         base = aBase
         subscriber = aBase.subscriber
+        handler = { (anAnnouncement) in
+            guard let announcement = anAnnouncement as? S else { return }
+            aBase.deliver(announcement)
+        }
     }
 }

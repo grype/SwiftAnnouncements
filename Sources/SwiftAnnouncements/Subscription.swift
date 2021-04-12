@@ -35,11 +35,16 @@ public class Subscription<T: Announceable> {
     }
 
     public func deliver(_ anAnnouncement: T) {
+        guard handles(anAnnouncement) else { return }
         anAnnouncement.prepareForAnnouncement()
         action(anAnnouncement, announcer)
     }
     
     public func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
+        return type(of: anAnnouncement).handles(anAnnouncement)
+    }
+    
+    public static func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
         return type(of: anAnnouncement).handles(anAnnouncement)
     }
 
