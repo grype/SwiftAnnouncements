@@ -4,8 +4,8 @@ Announcements is an alternative implementation of the Observer pattern, similar 
 
 - Subscription is block based
 - Any type of object can be announced
-- Thread-safe and thread-agnostic - notifications are delivered in the same thread they are posted
-- Handling of notifications does not require a run loop
+- Thread-safe and thread-agnostic - announcements are delivered in the same thread they are announced
+- Handling of announcements does not require a run loop
 
 ### Example:
 
@@ -17,13 +17,13 @@ let announcer = Announcer()
 
 // Observers subscribe to announcements by type
 let subscription = announcer.when(String.self) { (aString, anAnnouncer) in
-    print("Received announcement: \(aString)")
+    print("World says: \(aString)")
 }
 
 // Notify observers by making an announcement
 announcer.announce("Drink Water!")
 
-// Stop observin by removing the subscription object
+// Stop observing by removing the subscription object
 announcer.remove(subscription: subscription)
 
 // Alternatively, use an arbitrary subscriber object for managing subscriptions:
