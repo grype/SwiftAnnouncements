@@ -81,7 +81,11 @@ import Foundation
  */
 public class Announcer {
     
-    private(set) var registry = Registry()
+    public private(set) var registry = Registry()
+    
+    // MARK:- Init
+    
+    public init() {}
     
     deinit {
         registry.removeAllSubscriptions()
