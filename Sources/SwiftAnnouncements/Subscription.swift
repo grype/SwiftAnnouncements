@@ -40,7 +40,7 @@ public class Subscription<T: Announceable> {
     
     private(set)var subscriberAddress: Int?
 
-    init(action anAction: @escaping Action, type aType: T.Type, announcer anAnnouncer: Announcer) {
+    public init(action anAction: @escaping Action, type aType: T.Type, announcer anAnnouncer: Announcer) {
         action = anAction
         announcementType = aType
         announcer = anAnnouncer

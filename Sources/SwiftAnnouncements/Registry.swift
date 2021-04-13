@@ -15,7 +15,11 @@ import RWLock
  I am used by an `Announcer` to keep track of all subscriptions.
  I keep all subscriptions in a `ReadWriteLock`ed array. I am thread-safe.
  */
-class Registry {
+public class Registry {
+    
+    // MARK:- Init
+    
+    public init() {}
     
     // MARK:- Properties
     
