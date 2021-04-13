@@ -27,7 +27,18 @@ public class Subscription<T: Announceable> {
     public var announcer: Announcer
     
     /// Optional subscriber object
-    public var subscriber: AnyObject?
+    public weak var subscriber: AnyObject? {
+        didSet {
+            if let subscriber = subscriber {
+                subscriberAddress = unsafeBitCast(subscriber, to: Int.self)
+            }
+            else {
+                subscriberAddress = nil
+            }
+        }
+    }
+    
+    private(set)var subscriberAddress: Int?
 
     init(action anAction: @escaping Action, type aType: T.Type, announcer anAnnouncer: Announcer) {
         action = anAction
