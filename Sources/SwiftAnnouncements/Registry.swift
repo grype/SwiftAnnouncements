@@ -34,8 +34,8 @@ class Registry {
     }
     
     public func remove(subscriber: AnyObject) {
-        subscriptions.removeAll { (each) -> Bool in
-            return each.subscriber === subscriber
+        subscriptions.removeAll { (aSubscription) -> Bool in
+            return aSubscription.subscriberAddress == unsafeBitCast(subscriber, to: Int.self)
         }
     }
     
@@ -61,12 +61,14 @@ class Registry {
 public struct AnySubscription {
     
     public var base: Any
-    var subscriber: AnyObject?
+    weak var subscriber: AnyObject?
+    var subscriberAddress: Int?
     fileprivate var handler: (Announceable) -> Void
     
     public init<H,S:Announceable>(_ aBase: H) where H : Subscription<S> {
         base = aBase
         subscriber = aBase.subscriber
+        subscriberAddress = aBase.subscriberAddress
         handler = { (anAnnouncement) in
             guard let announcement = anAnnouncement as? S else { return }
             aBase.deliver(announcement)

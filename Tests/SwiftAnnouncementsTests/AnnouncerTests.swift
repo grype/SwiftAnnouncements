@@ -182,4 +182,36 @@ class AnnouncerTest: XCTestCase {
         expect(remainingSubscription) === subscription
     }
     
+    func testWeakSubscriber() {
+        class Foo {}
+        var foo: Foo? = Foo()
+        announcer.when(String.self, subscriber: foo) { (_, _) in
+            // nothing to do
+        }
+        foo = nil
+        expect(self.announcer.registry.subscriptions.first!.subscriber).to(beNil())
+        let subscription = self.announcer.registry.subscriptions.first?.base as! Subscription<String>
+        expect(subscription.subscriber).to(beNil())
+    }
+    
+    func testUnsubscribesReleasedSubscriber() {
+        class Foo {
+            var announcer: Announcer
+            deinit {
+                announcer.unsubscribe(self)
+            }
+            init(_ anAnnouncer: Announcer) {
+                announcer = anAnnouncer
+            }
+        }
+        
+        var foo: Foo? = Foo(self.announcer)
+        foo!.announcer.when(String.self, subscriber: foo!) { (_, _) in
+            // nothing to do
+        }
+        expect(self.announcer.registry.subscriptions.count) == 1
+        foo = nil
+        expect(self.announcer.registry.subscriptions.isEmpty).to(beTrue())
+    }
+    
 }
