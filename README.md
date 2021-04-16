@@ -1,5 +1,7 @@
 # Announcements
 
+[![CI](https://github.com/grype/SwiftAnnouncements/actions/workflows/main.yml/badge.svg)](https://github.com/grype/SwiftAnnouncements/actions/workflows/main.yml)
+
 Announcements is an alternative implementation of the Observer pattern, similar to `NSNotificationCenter` but with a few key differences: 
 
 - Subscription is block based
