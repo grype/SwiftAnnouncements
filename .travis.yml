@@ -1,0 +1,6 @@
+language: swift
+
+osx_image: xcode12.2
+xcode_scheme: SwiftAnnouncements
+xcode_destination: platform=macOS
+script: make test
