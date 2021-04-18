@@ -214,4 +214,26 @@ class AnnouncerTest: XCTestCase {
         expect(self.announcer.registry.subscriptions.isEmpty).to(beTrue())
     }
     
+    func testAnnouncerPerformance() {
+        let announcer = Announcer()
+        announcer.when(String.self) { (_, _) in
+        }
+        measure {
+            for _ in 1..<10000 {
+                announcer.announce("")
+            }
+        }
+    }
+    
+    func testNotificationCenterPerfomance() {
+        let center = NotificationCenter.default
+        center.addObserver(forName: NSNotification.Name(rawValue: "test"), object: nil, queue: nil) { (aNotification) in
+        }
+        measure {
+            for _ in 1..<10000 {
+                center.post(name: NSNotification.Name(rawValue: "test"), object: nil, userInfo: nil)
+            }
+        }
+    }
+    
 }
