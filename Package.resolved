@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/Quick/Nimble",
         "state": {
           "branch": null,
-          "revision": "e491a6731307bb23783bf664d003be9b2fa59ab5",
-          "version": "9.0.0"
+          "revision": "af1730dde4e6c0d45bf01b99f8a41713ce536790",
+          "version": "9.2.0"
         }
       },
       {
@@ -33,7 +33,7 @@
         "repositoryURL": "https://github.com/grype/RWLock-Swift",
         "state": {
           "branch": null,
-          "revision": "acc30266910a83d5a0a6d24ac1ec156d25b4884c",
+          "revision": "fc7781a5b696c9e26942d8175b7d2363cd2d3680",
           "version": "1.0.0"
         }
       }

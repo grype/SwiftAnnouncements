@@ -18,7 +18,7 @@ let package = Package(
             targets: ["SwiftAnnouncements"]),
     ],
     dependencies: [
-        .package(name: "Nimble", url: "https://github.com/Quick/Nimble", from: "9.0.0"),
+        .package(name: "Nimble", url: "https://github.com/Quick/Nimble", from: "9.2.0"),
         .package(name: "RWLock", url: "https://github.com/grype/RWLock-Swift", from: "1.0.0")
     ],
     targets: [
