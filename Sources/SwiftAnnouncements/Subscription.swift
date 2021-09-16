@@ -55,9 +55,5 @@ public class Subscription<T: Announceable> {
     public func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
         return type(of: anAnnouncement).handles(anAnnouncement)
     }
-    
-    public static func handles<T:Announceable>(_ anAnnouncement: T) -> Bool {
-        return type(of: anAnnouncement).handles(anAnnouncement)
-    }
 
 }
