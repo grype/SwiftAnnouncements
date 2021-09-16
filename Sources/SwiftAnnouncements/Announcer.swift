@@ -81,7 +81,7 @@ import Foundation
  */
 public class Announcer {
     
-    public private(set) var registry = Registry()
+    private(set) var registry = Registry()
     
     // MARK:- Init
     
@@ -117,6 +117,14 @@ public class Announcer {
     
     open func announce<T: Announceable>(_ announcement: T) {
         registry.deliver(announcement)
+    }
+    
+    // MARK:- Accessing
+    
+    open var allSubscribers: [AnyObject] {
+        return registry.subscriptions.compactMap { aSubscription in
+            aSubscription.subscriber
+        }
     }
     
 }
