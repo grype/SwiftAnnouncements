@@ -2,11 +2,12 @@
 
 [![CI](https://github.com/grype/SwiftAnnouncements/actions/workflows/main.yml/badge.svg)](https://github.com/grype/SwiftAnnouncements/actions/workflows/main.yml)
 
-Announcements is an alternative implementation of the Observer pattern, similar to `NSNotificationCenter` but with a few key differences: 
+An event dispatch mechanism that allows broadcast of information to registered observers. 
+It is similar to `NSNotificationCenter`, but with a few notable differences: 
 
-- Subscription is block based
 - Any type of object can be announced
-- Thread-safe and thread-agnostic - announcements are delivered in the same thread they are announced
+- Subscription is block based 
+- Thread-agnostic - announcements are delivered in the same thread they are announced
 - Handling of announcements does not require a run loop
 
 ### Example:
