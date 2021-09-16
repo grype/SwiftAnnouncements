@@ -11,7 +11,7 @@ import Foundation
 /**
  I define how to be Announceable.
  
- Announceables can be used for notifying observers of an `Announcer`.
+ Announceables are used for notifying observers of an `Announcer`.
  */
 public protocol Announceable {
     /// Optional logic to perform immediately before delivering an announcement
