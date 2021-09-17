@@ -23,7 +23,7 @@ public class Registry {
     
     // MARK:- Properties
     
-    @RWLocked public private(set) var subscriptions = [AnySubscription]()
+    @RWLocked private(set) var subscriptions = [AnySubscription]()
     
     // MARK:- Adding/Removing
     
