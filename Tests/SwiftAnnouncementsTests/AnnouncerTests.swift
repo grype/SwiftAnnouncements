@@ -214,6 +214,30 @@ class AnnouncerTest: XCTestCase {
         expect(self.announcer.registry.subscriptions.isEmpty).to(beTrue())
     }
     
+    func testOnceIsInvokedOnce() {
+        var count = 0
+        announcer.once(TestAnnouncement.self) { _, _ in
+            count = count + 1
+            return true
+        }
+        announcer.announce(TestAnnouncement())
+        announcer.announce(TestAnnouncement())
+        expect(count) == 1
+        expect(self.announcer.registry.subscriptions.isEmpty).to(beTrue())
+    }
+    
+    func testOnceThatNeverSucceeds() {
+        var count = 0
+        announcer.once(TestAnnouncement.self) { _, _ in
+            count = count + 1
+            return false
+        }
+        announcer.announce(TestAnnouncement())
+        announcer.announce(TestAnnouncement())
+        expect(count) == 2
+        expect(self.announcer.registry.subscriptions.isEmpty).to(beFalse())
+    }
+    
     func testAnnouncerPerformance() {
         let announcer = Announcer()
         announcer.when(String.self) { (_, _) in

@@ -101,6 +101,17 @@ public class Announcer {
         return subscription
     }
     
+    @discardableResult
+    open func once<T: Announceable>(_ aType: T.Type, do aBlock: @escaping (T, Announcer)->Bool) -> Subscription<T> {
+        let subscription = Subscription(action: { _,_ in }, type: aType, announcer: self)
+        subscription.action = { announcement, announcer in
+            guard aBlock(announcement, announcer) else { return }
+            announcer.remove(subscription: subscription)
+        }
+        registry.add(subscription)
+        return subscription
+    }
+    
     open func remove<T: Announceable>(subscription: Subscription<T>) {
         registry.remove(subscription)
     }
