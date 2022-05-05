@@ -14,6 +14,9 @@ extension String : Announceable {}
 class TestAnnouncement : Announceable {}
 class TestAnnouncementSubclass : TestAnnouncement {}
 
+fileprivate class Base: Announceable {}
+fileprivate class SubBase: Base {}
+
 class AnnouncerTest: XCTestCase {
     
     private var announcer: Announcer!
@@ -238,6 +241,17 @@ class AnnouncerTest: XCTestCase {
         expect(self.announcer.registry.subscriptions.isEmpty).to(beFalse())
     }
     
+    func testIdentificationOfAnnounceableSubclass() {
+        var count: Int = 0
+        announcer.when(SubBase.self) { _, _ in
+            count += 1
+        }
+        announcer.announce(SubBase())
+        expect(count) == 1
+        announcer.announce(Base())
+        expect(count) == 1
+    }
+    
     func testAnnouncerPerformance() {
         let announcer = Announcer()
         announcer.when(String.self) { (_, _) in
@@ -259,5 +273,4 @@ class AnnouncerTest: XCTestCase {
             }
         }
     }
-    
 }
