@@ -252,6 +252,23 @@ class AnnouncerTest: XCTestCase {
         expect(count) == 1
     }
     
+    func testSubclassDifferentiation() {
+        var baseCount: Int = 0
+        var subBaseCount: Int = 0
+        announcer.when(Base.self) { _, _ in
+            baseCount += 1
+        }
+        announcer.when(SubBase.self) { _, _ in
+            subBaseCount += 1
+        }
+        announcer.announce(Base())
+        expect(baseCount) == 1
+        expect(subBaseCount) == 0
+        announcer.announce(SubBase())
+        expect(baseCount) == 2
+        expect(subBaseCount) == 1
+    }
+    
     func testAnnouncerPerformance() {
         let announcer = Announcer()
         announcer.when(String.self) { (_, _) in
